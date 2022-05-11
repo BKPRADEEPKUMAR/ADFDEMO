@@ -1,0 +1,17 @@
+{
+	"name": "github transfer",
+	"properties": {
+		"activities": [
+			{
+				"name": "Waitfor 30 secs",
+				"type": "Wait",
+				"dependsOn": [],
+				"userProperties": [],
+				"typeProperties": {
+					"waitTimeInSeconds": 1
+				}
+			}
+		],
+		"annotations": []
+	}
+}

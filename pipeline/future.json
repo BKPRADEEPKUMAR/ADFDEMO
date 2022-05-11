@@ -1,0 +1,17 @@
+{
+	"name": "future",
+	"properties": {
+		"activities": [
+			{
+				"name": "Wait to 30secs",
+				"type": "Wait",
+				"dependsOn": [],
+				"userProperties": [],
+				"typeProperties": {
+					"waitTimeInSeconds": 1
+				}
+			}
+		],
+		"annotations": []
+	}
+}

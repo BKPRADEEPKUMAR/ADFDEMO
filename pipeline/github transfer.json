@@ -1,9 +1,9 @@
 {
-	"name": "future",
+	"name": "github transfer",
 	"properties": {
 		"activities": [
 			{
-				"name": "Wait to 30secs",
+				"name": "Waitfor 30 secs",
 				"type": "Wait",
 				"dependsOn": [],
 				"userProperties": [],

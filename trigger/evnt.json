@@ -1,0 +1,28 @@
+{
+	"name": "evnt",
+	"properties": {
+		"annotations": [],
+		"runtimeState": "Stopped",
+		"pipelines": [
+			{
+				"pipelineReference": {
+					"referenceName": "pass parameter",
+					"type": "PipelineReference"
+				},
+				"parameters": {
+					"filename": "11_7_01_tab.txt"
+				}
+			}
+		],
+		"type": "BlobEventsTrigger",
+		"typeProperties": {
+			"blobPathBeginsWith": "/input/blobs/",
+			"blobPathEndsWith": ".txt",
+			"ignoreEmptyBlobs": true,
+			"scope": "/subscriptions/75f85e4d-abf5-4451-8610-d27712f74385/resourceGroups/newresource/providers/Microsoft.Storage/storageAccounts/bsasource",
+			"events": [
+				"Microsoft.Storage.BlobCreated"
+			]
+		}
+	}
+}

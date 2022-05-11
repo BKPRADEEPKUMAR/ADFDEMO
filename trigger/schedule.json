@@ -1,0 +1,27 @@
+{
+	"name": "schedule",
+	"properties": {
+		"annotations": [],
+		"runtimeState": "Stopped",
+		"pipelines": [
+			{
+				"pipelineReference": {
+					"referenceName": "copy data to blob",
+					"type": "PipelineReference"
+				},
+				"parameters": {
+					"sourcefile": "11_7_01_tab.txt"
+				}
+			}
+		],
+		"type": "ScheduleTrigger",
+		"typeProperties": {
+			"recurrence": {
+				"frequency": "Minute",
+				"interval": 3,
+				"startTime": "2022-05-10T04:23:00Z",
+				"timeZone": "UTC"
+			}
+		}
+	}
+}

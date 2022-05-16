@@ -1,0 +1,27 @@
+{
+	"name": "newcountriesdata",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureSqlDatabase90",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [
+			{
+				"name": "id",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "name",
+				"type": "varchar"
+			}
+		],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "newcountries"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

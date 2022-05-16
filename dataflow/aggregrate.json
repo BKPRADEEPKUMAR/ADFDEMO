@@ -1,0 +1,64 @@
+{
+	"name": "aggregrate",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "DelimitedText27",
+						"type": "DatasetReference"
+					},
+					"name": "aggregrate"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "adlsdestination",
+						"type": "DatasetReference"
+					},
+					"name": "sink1"
+				}
+			],
+			"transformations": [
+				{
+					"name": "aggregate1"
+				}
+			],
+			"scriptLines": [
+				"source(output(",
+				"          COUNTRY as string,",
+				"          YEAR as integer,",
+				"          PRODUCT_TYPE as string,",
+				"          SALES as integer",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     inferDriftedColumnTypes: true,",
+				"     ignoreNoFilesFound: false) ~> aggregrate",
+				"aggregrate aggregate(groupBy(COUNTRY),",
+				"     sumsales = sum(SALES),",
+				"          avgsales = round(avg(SALES),2),",
+				"          maxsales = max(SALES),",
+				"          countsales = count(SALES)) ~> aggregate1",
+				"aggregate1 sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     input(",
+				"          ROW as string,",
+				"          COUNTRY as string,",
+				"          YEARS as string,",
+				"          SALES as string,",
+				"          CUST_ID as string",
+				"     ),",
+				"     partitionFileNames:['aggregrate.csv'],",
+				"     umask: 0022,",
+				"     preCommands: [],",
+				"     postCommands: [],",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     partitionBy('hash', 1)) ~> sink1"
+			]
+		}
+	}
+}

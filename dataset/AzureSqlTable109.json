@@ -1,0 +1,17 @@
+{
+	"name": "AzureSqlTable109",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureSqlDatabase92",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [],
+		"typeProperties": {
+			"schema": "SalesLT",
+			"table": "Product"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

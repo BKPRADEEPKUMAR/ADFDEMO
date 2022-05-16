@@ -1,0 +1,17 @@
+{
+	"name": "AzureSqlTable104",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureSqlDatabase89",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "tblcontrol"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

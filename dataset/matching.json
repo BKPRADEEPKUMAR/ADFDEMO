@@ -1,0 +1,17 @@
+{
+	"name": "matching",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureSqlDatabase91",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "matchingrecords"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

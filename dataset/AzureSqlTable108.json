@@ -1,0 +1,42 @@
+{
+	"name": "AzureSqlTable108",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureSqlDatabase90",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [
+			{
+				"name": "movie",
+				"type": "nvarchar"
+			},
+			{
+				"name": "title",
+				"type": "nvarchar"
+			},
+			{
+				"name": "generes",
+				"type": "nvarchar"
+			},
+			{
+				"name": "year",
+				"type": "nvarchar"
+			},
+			{
+				"name": "rating",
+				"type": "nvarchar"
+			},
+			{
+				"name": "rotton tomato",
+				"type": "nvarchar"
+			}
+		],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "movies"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

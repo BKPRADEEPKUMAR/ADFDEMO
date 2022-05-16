@@ -1,0 +1,57 @@
+{
+	"name": "ds_sqldatabase",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "is_blobstorage",
+			"type": "LinkedServiceReference"
+		},
+		"parameters": {
+			"filenmae": {
+				"type": "string"
+			}
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"fileName": {
+					"value": "@dataset().filenmae",
+					"type": "Expression"
+				},
+				"container": "input"
+			},
+			"columnDelimiter": ",",
+			"escapeChar": "\\",
+			"firstRowAsHeader": true,
+			"quoteChar": "\""
+		},
+		"schema": [
+			{
+				"name": "description",
+				"type": "String"
+			},
+			{
+				"name": "industry",
+				"type": "String"
+			},
+			{
+				"name": "level",
+				"type": "String"
+			},
+			{
+				"name": "size",
+				"type": "String"
+			},
+			{
+				"name": "line_code",
+				"type": "String"
+			},
+			{
+				"name": "value",
+				"type": "String"
+			}
+		]
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

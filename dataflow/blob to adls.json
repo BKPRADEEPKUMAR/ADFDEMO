@@ -1,0 +1,81 @@
+{
+	"name": "blob to adls",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "DelimitedText11",
+						"type": "DatasetReference"
+					},
+					"name": "readfromblob"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "DelimitedText12",
+						"type": "DatasetReference"
+					},
+					"name": "writeintoadls"
+				}
+			],
+			"transformations": [
+				{
+					"name": "filter1"
+				}
+			],
+			"scriptLines": [
+				"source(output(",
+				"          Series_reference as string,",
+				"          Period as float,",
+				"          Data_value as string,",
+				"          Suppressed as string,",
+				"          STATUS as string,",
+				"          UNITS as string,",
+				"          Magnitude as string,",
+				"          Subject as string,",
+				"          Group as string,",
+				"          Series_title_1 as string,",
+				"          Series_title_2 as string,",
+				"          Series_title_3 as string,",
+				"          Series_title_4 as string,",
+				"          Series_title_5 as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     inferDriftedColumnTypes: true,",
+				"     limit: 10,",
+				"     ignoreNoFilesFound: false,",
+				"     partitionBy('hash', 1)) ~> readfromblob",
+				"readfromblob filter(Period==2001.03) ~> filter1",
+				"filter1 sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     input(",
+				"          Series_reference as string,",
+				"          Period as string,",
+				"          Data_value as string,",
+				"          Suppressed as string,",
+				"          STATUS as string,",
+				"          UNITS as string,",
+				"          Magnitude as string,",
+				"          Subject as string,",
+				"          Group as string,",
+				"          Series_title_1 as string,",
+				"          Series_title_2 as string,",
+				"          Series_title_3 as string,",
+				"          Series_title_4 as string,",
+				"          Series_title_5 as string",
+				"     ),",
+				"     partitionFileNames:['DEVIRED.XLSX'],",
+				"     umask: 0022,",
+				"     preCommands: [],",
+				"     postCommands: [],",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     partitionBy('hash', 1)) ~> writeintoadls"
+			]
+		}
+	}
+}

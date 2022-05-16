@@ -1,0 +1,95 @@
+{
+	"name": "lookupoactivity",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "newcountriesdata",
+						"type": "DatasetReference"
+					},
+					"name": "newcountries"
+				},
+				{
+					"dataset": {
+						"referenceName": "countriesdata",
+						"type": "DatasetReference"
+					},
+					"name": "countries"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "matching",
+						"type": "DatasetReference"
+					},
+					"name": "matchingrecords"
+				},
+				{
+					"dataset": {
+						"referenceName": "nonmatching",
+						"type": "DatasetReference"
+					},
+					"name": "nonmatching"
+				}
+			],
+			"transformations": [
+				{
+					"name": "readingdatafromtwosources"
+				},
+				{
+					"name": "splitnonmatchingrecords"
+				}
+			],
+			"scriptLines": [
+				"source(output(",
+				"          id as integer,",
+				"          name as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     isolationLevel: 'READ_UNCOMMITTED',",
+				"     format: 'table') ~> newcountries",
+				"source(output(",
+				"          id as integer,",
+				"          name as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     isolationLevel: 'READ_UNCOMMITTED',",
+				"     format: 'table') ~> countries",
+				"newcountries, countries lookup(newcountries@id == countries@id,",
+				"     multiple: true,",
+				"     partitionBy('hash', 1),",
+				"     broadcast: 'auto')~> readingdatafromtwosources",
+				"readingdatafromtwosources split(isMatch(),",
+				"     disjoint: false) ~> splitnonmatchingrecords@(matchingrecords, nonmatchingrecords)",
+				"splitnonmatchingrecords@matchingrecords sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     deletable:false,",
+				"     insertable:true,",
+				"     updateable:false,",
+				"     upsertable:false,",
+				"     truncate:true,",
+				"     format: 'table',",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     errorHandlingOption: 'stopOnFirstError') ~> matchingrecords",
+				"splitnonmatchingrecords@nonmatchingrecords sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     deletable:false,",
+				"     insertable:true,",
+				"     updateable:false,",
+				"     upsertable:false,",
+				"     truncate:true,",
+				"     format: 'table',",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     errorHandlingOption: 'stopOnFirstError',",
+				"     partitionBy('hash', 1)) ~> nonmatching"
+			]
+		}
+	}
+}

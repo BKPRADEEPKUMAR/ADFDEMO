@@ -1,0 +1,170 @@
+{
+	"name": "CONDITIONAL SPLIT",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "DelimitedText16",
+						"type": "DatasetReference"
+					},
+					"name": "CONDITION"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "DelimitedText17",
+						"type": "DatasetReference"
+					},
+					"name": "USAUK"
+				},
+				{
+					"dataset": {
+						"referenceName": "DelimitedText17",
+						"type": "DatasetReference"
+					},
+					"name": "USAIND"
+				},
+				{
+					"dataset": {
+						"referenceName": "DelimitedText17",
+						"type": "DatasetReference"
+					},
+					"name": "DEFAULT"
+				},
+				{
+					"dataset": {
+						"referenceName": "DelimitedText17",
+						"type": "DatasetReference"
+					},
+					"name": "AUSSA"
+				}
+			],
+			"transformations": [
+				{
+					"name": "split1"
+				}
+			],
+			"scriptLines": [
+				"source(output(",
+				"          COUNTRY as string,",
+				"          YEAR as string,",
+				"          PRODUCT as string,",
+				"          SALES as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     inferDriftedColumnTypes: true,",
+				"     limit: 100,",
+				"     ignoreNoFilesFound: false) ~> CONDITION",
+				"CONDITION split(COUNTRY=='USA'||COUNTRY=='UK',",
+				"     COUNTRY=='USA'||COUNTRY=='IND',",
+				"     COUNTRY=='AUS'||COUNTRY=='SA',",
+				"     disjoint: true,",
+				"     partitionBy('hash', 1)) ~> split1@(USAUK, USAIND, AUSSA, DEFAULT)",
+				"split1@USAUK sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     input(",
+				"          Series_reference as string,",
+				"          Period as string,",
+				"          Data_value as string,",
+				"          Suppressed as string,",
+				"          STATUS as string,",
+				"          UNITS as string,",
+				"          Magnitude as string,",
+				"          Subject as string,",
+				"          Group as string,",
+				"          Series_title_1 as string,",
+				"          Series_title_2 as string,",
+				"          Series_title_3 as string,",
+				"          Series_title_4 as string,",
+				"          Series_title_5 as string",
+				"     ),",
+				"     partitionFileNames:['USAUK.CSV'],",
+				"     umask: 0022,",
+				"     preCommands: [],",
+				"     postCommands: [],",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     partitionBy('hash', 1)) ~> USAUK",
+				"split1@USAIND sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     input(",
+				"          Series_reference as string,",
+				"          Period as string,",
+				"          Data_value as string,",
+				"          Suppressed as string,",
+				"          STATUS as string,",
+				"          UNITS as string,",
+				"          Magnitude as string,",
+				"          Subject as string,",
+				"          Group as string,",
+				"          Series_title_1 as string,",
+				"          Series_title_2 as string,",
+				"          Series_title_3 as string,",
+				"          Series_title_4 as string,",
+				"          Series_title_5 as string",
+				"     ),",
+				"     partitionFileNames:['USAIND.CSV'],",
+				"     umask: 0022,",
+				"     preCommands: [],",
+				"     postCommands: [],",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     partitionBy('hash', 1)) ~> USAIND",
+				"split1@DEFAULT sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     input(",
+				"          Series_reference as string,",
+				"          Period as string,",
+				"          Data_value as string,",
+				"          Suppressed as string,",
+				"          STATUS as string,",
+				"          UNITS as string,",
+				"          Magnitude as string,",
+				"          Subject as string,",
+				"          Group as string,",
+				"          Series_title_1 as string,",
+				"          Series_title_2 as string,",
+				"          Series_title_3 as string,",
+				"          Series_title_4 as string,",
+				"          Series_title_5 as string",
+				"     ),",
+				"     partitionFileNames:['DEFAULT.CSV'],",
+				"     umask: 0022,",
+				"     preCommands: [],",
+				"     postCommands: [],",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     partitionBy('hash', 1)) ~> DEFAULT",
+				"split1@AUSSA sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     input(",
+				"          Series_reference as string,",
+				"          Period as string,",
+				"          Data_value as string,",
+				"          Suppressed as string,",
+				"          STATUS as string,",
+				"          UNITS as string,",
+				"          Magnitude as string,",
+				"          Subject as string,",
+				"          Group as string,",
+				"          Series_title_1 as string,",
+				"          Series_title_2 as string,",
+				"          Series_title_3 as string,",
+				"          Series_title_4 as string,",
+				"          Series_title_5 as string",
+				"     ),",
+				"     partitionFileNames:['AUSSA.CSV'],",
+				"     umask: 0022,",
+				"     preCommands: [],",
+				"     postCommands: [],",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     partitionBy('hash', 1)) ~> AUSSA"
+			]
+		}
+	}
+}

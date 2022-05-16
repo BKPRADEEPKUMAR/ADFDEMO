@@ -1,0 +1,89 @@
+{
+	"name": "joins",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "DelimitedText20",
+						"type": "DatasetReference"
+					},
+					"name": "join"
+				},
+				{
+					"dataset": {
+						"referenceName": "DelimitedText21",
+						"type": "DatasetReference"
+					},
+					"name": "join1"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "DelimitedText22",
+						"type": "DatasetReference"
+					},
+					"name": "towritedestination"
+				}
+			],
+			"transformations": [
+				{
+					"name": "join2"
+				},
+				{
+					"name": "selectedrows"
+				}
+			],
+			"scriptLines": [
+				"source(output(",
+				"          ROW as string,",
+				"          COUNTRY as string,",
+				"          YEARS as string,",
+				"          SALES as string,",
+				"          CUST_ID as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false) ~> join",
+				"source(output(",
+				"          ROW as string,",
+				"          COUNTRY as string,",
+				"          YEARS as string,",
+				"          SALES as string,",
+				"          CUST_ID as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false) ~> join1",
+				"join, join1 join(join@CUST_ID==join1@CUST_ID,",
+				"     joinType:'cross',",
+				"     broadcast: 'auto')~> join2",
+				"join2 select(mapColumn(",
+				"          ROW = join@ROW,",
+				"          COUNTRY = join@COUNTRY,",
+				"          YEARS = join@YEARS,",
+				"          SALES = join@SALES,",
+				"          CUST_ID = join@CUST_ID,",
+				"          ROW = join1@ROW,",
+				"          COUNTRY = join1@COUNTRY,",
+				"          YEARS = join1@YEARS,",
+				"          SALES = join1@SALES,",
+				"          CUST_ID = join1@CUST_ID",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> selectedrows",
+				"selectedrows sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     partitionFileNames:['cross.csv'],",
+				"     umask: 0022,",
+				"     preCommands: [],",
+				"     postCommands: [],",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     partitionBy('hash', 1)) ~> towritedestination"
+			]
+		}
+	}
+}

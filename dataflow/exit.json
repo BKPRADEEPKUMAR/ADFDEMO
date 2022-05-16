@@ -1,0 +1,80 @@
+{
+	"name": "exit",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "DelimitedText25",
+						"type": "DatasetReference"
+					},
+					"name": "exit"
+				},
+				{
+					"dataset": {
+						"referenceName": "DelimitedText26",
+						"type": "DatasetReference"
+					},
+					"name": "exit1"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "adlsdestination",
+						"type": "DatasetReference"
+					},
+					"name": "writeintodestination"
+				}
+			],
+			"transformations": [
+				{
+					"name": "exists1"
+				}
+			],
+			"scriptLines": [
+				"source(output(",
+				"          ROW as string,",
+				"          COUNTRY as string,",
+				"          YEARS as string,",
+				"          SALES as string,",
+				"          CUST_ID as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false) ~> exit",
+				"source(output(",
+				"          ROW as string,",
+				"          COUNTRY as string,",
+				"          YEARS as string,",
+				"          SALES as string,",
+				"          CUST_ID as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     inferDriftedColumnTypes: true,",
+				"     ignoreNoFilesFound: false) ~> exit1",
+				"exit, exit1 exists(exit@CUST_ID == exit1@CUST_ID,",
+				"     negate:true,",
+				"     broadcast: 'auto')~> exists1",
+				"exists1 sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     input(",
+				"          ROW as string,",
+				"          COUNTRY as string,",
+				"          YEARS as string,",
+				"          SALES as string,",
+				"          CUST_ID as string",
+				"     ),",
+				"     partitionFileNames:['notexists.csv'],",
+				"     umask: 0022,",
+				"     preCommands: [],",
+				"     postCommands: [],",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     partitionBy('hash', 1)) ~> writeintodestination"
+			]
+		}
+	}
+}

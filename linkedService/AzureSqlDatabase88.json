@@ -1,0 +1,19 @@
+{
+	"name": "AzureSqlDatabase88",
+	"type": "Microsoft.DataFactory/factories/linkedservices",
+	"properties": {
+		"annotations": [],
+		"type": "AzureSqlDatabase",
+		"typeProperties": {
+			"connectionString": {
+				"type": "AzureKeyVaultSecret",
+				"store": {
+					"referenceName": "AzureKeyVault1",
+					"type": "LinkedServiceReference"
+				},
+				"secretName": "sqldbconnection",
+				"secretVersion": "fb920b52741d4150a6c258b87ff5987c"
+			}
+		}
+	}
+}

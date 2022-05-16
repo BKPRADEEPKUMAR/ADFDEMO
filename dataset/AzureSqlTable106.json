@@ -1,0 +1,17 @@
+{
+	"name": "AzureSqlTable106",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureSqlDatabase90",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "userdata"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

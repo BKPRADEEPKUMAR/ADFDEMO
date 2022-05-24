@@ -10,7 +10,7 @@
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobFSLocation",
-				"folderPath": "aggregatedata",
+				"folderPath": "windows",
 				"fileSystem": "joins"
 			},
 			"columnDelimiter": ",",

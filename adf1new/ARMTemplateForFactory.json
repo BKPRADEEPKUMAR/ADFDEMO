@@ -1333,6 +1333,91 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/windoes functions')]",
+			"type": "Microsoft.DataFactory/factories/dataflows",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"type": "MappingDataFlow",
+				"typeProperties": {
+					"sources": [
+						{
+							"dataset": {
+								"referenceName": "AzureSqlTable110",
+								"type": "DatasetReference"
+							},
+							"name": "readdatafromsql"
+						}
+					],
+					"sinks": [
+						{
+							"dataset": {
+								"referenceName": "adlsdestination",
+								"type": "DatasetReference"
+							},
+							"name": "sink1"
+						}
+					],
+					"transformations": [
+						{
+							"name": "window1"
+						}
+					],
+					"scriptLines": [
+						"source(output(",
+						"          ProductID as integer,",
+						"          Name as string,",
+						"          ProductNumber as string,",
+						"          Color as string,",
+						"          StandardCost as decimal(19,4),",
+						"          ListPrice as decimal(19,4),",
+						"          Size as string,",
+						"          Weight as decimal(8,2),",
+						"          ProductCategoryID as integer,",
+						"          ProductModelID as integer,",
+						"          SellStartDate as timestamp,",
+						"          SellEndDate as timestamp,",
+						"          DiscontinuedDate as timestamp,",
+						"          ThumbNailPhoto as binary,",
+						"          ThumbnailPhotoFileName as string,",
+						"          rowguid as string,",
+						"          ModifiedDate as timestamp",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     inferDriftedColumnTypes: true,",
+						"     isolationLevel: 'READ_UNCOMMITTED',",
+						"     format: 'table') ~> readdatafromsql",
+						"readdatafromsql window(over(color = Color),",
+						"     asc(ProductID, true),",
+						"     rank = rank(),",
+						"          rownumber = rowNumber(),",
+						"          denserank = denseRank(),",
+						"     partitionBy('roundRobin', 2)) ~> window1",
+						"window1 sink(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     input(",
+						"          ROW as string,",
+						"          COUNTRY as string,",
+						"          YEARS as string,",
+						"          SALES as string,",
+						"          CUST_ID as string",
+						"     ),",
+						"     partitionFileNames:['ranking.csv'],",
+						"     umask: 0022,",
+						"     preCommands: [],",
+						"     postCommands: [],",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true,",
+						"     partitionBy('hash', 1)) ~> sink1"
+					]
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/AzureSqlTable110')]",
+				"[concat(variables('factoryId'), '/datasets/adlsdestination')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/copy data to blob')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
@@ -3392,11 +3477,11 @@
 						"userProperties": [],
 						"typeProperties": {
 							"dataflow": {
-								"referenceName": "aggregrate",
+								"referenceName": "windoes functions",
 								"type": "DataFlowReference",
 								"parameters": {},
 								"datasetParameters": {
-									"aggregrate": {},
+									"readdatafromsql": {},
 									"sink1": {}
 								}
 							},
@@ -3414,10 +3499,10 @@
 					"cancelAfter": {}
 				},
 				"annotations": [],
-				"lastPublishTime": "2022-05-16T13:45:57Z"
+				"lastPublishTime": "2022-05-24T09:41:16Z"
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/dataflows/aggregrate')]"
+				"[concat(variables('factoryId'), '/dataflows/windoes functions')]"
 			]
 		},
 		{

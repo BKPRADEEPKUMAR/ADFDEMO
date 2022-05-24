@@ -1,0 +1,60 @@
+{
+	"$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"value": "adf1new"
+		},
+		"is_blobstorage_connectionString": {
+			"value": ""
+		},
+		"is_adls_connectionString": {
+			"value": ""
+		},
+		"AzureDataLakeStorage1_accountKey": {
+			"value": ""
+		},
+		"AzureSqlDatabase89_connectionString": {
+			"value": ""
+		},
+		"AzureSqlDatabase90_connectionString": {
+			"value": ""
+		},
+		"AzureSqlDatabase91_connectionString": {
+			"value": ""
+		},
+		"AzureSqlDatabase92_connectionString": {
+			"value": ""
+		},
+		"AzureSqlDatabase93_connectionString": {
+			"value": ""
+		},
+		"schedule_properties_copy data to blob_parameters_sourcefile": {
+			"value": "11_7_01_tab.txt"
+		},
+		"evnt_properties_pass parameter_parameters_filename": {
+			"value": "11_7_01_tab.txt"
+		},
+		"evnt_properties_typeProperties_scope": {
+			"value": "/subscriptions/75f85e4d-abf5-4451-8610-d27712f74385/resourceGroups/newresource/providers/Microsoft.Storage/storageAccounts/bsasource"
+		},
+		"ls_http_properties_typeProperties_url": {
+			"value": "@{linkedService().baseurl}"
+		},
+		"AzureDataLakeStorage1_properties_typeProperties_url": {
+			"value": "https://adlsdestination.dfs.core.windows.net"
+		},
+		"ls_AzureSqlDatabase_properties_typeProperties_connectionString_secretName": {
+			"value": "SDLCONNECTION"
+		},
+		"AzureSqlDatabase88_properties_typeProperties_connectionString_secretName": {
+			"value": "sqldbconnection"
+		},
+		"AzureKeyVault1_properties_typeProperties_baseUrl": {
+			"value": "https://SOURCEKEYVAULT1.vault.azure.net/"
+		},
+		"AzureBlobStorageVAULT_properties_typeProperties_connectionString_secretName": {
+			"value": "BOLBCONNECTION"
+		}
+	}
+}

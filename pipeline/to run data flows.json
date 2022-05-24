@@ -16,7 +16,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"dataflow": {
-						"referenceName": "aggregrate",
+						"referenceName": "windoes functions",
 						"type": "DataFlowReference"
 					},
 					"compute": {
